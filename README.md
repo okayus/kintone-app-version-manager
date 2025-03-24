@@ -47,14 +47,32 @@ npm run build
 ## アップロード
 
 ビルドしたプラグインをkintoneにアップロードします。
+
+### Linux/Mac環境
 ```sh
 npm run upload
+```
+
+### Windows環境
+Windows環境では、直接コマンドを実行する必要があります：
+```sh
+set KINTONE_BASE_URL=your_kintone_base_url
+set KINTONE_USERNAME=your_kintone_username
+set KINTONE_PASSWORD=your_kintone_password
+npx kintone-plugin-uploader plugin/plugin.zip --base-url %KINTONE_BASE_URL% --username %KINTONE_USERNAME% --password %KINTONE_PASSWORD%
 ```
 
 本番環境用のプラグインをビルドしてアップロードします。
 ```sh
 npm run build:prod
-npm run upload:prod
+```
+
+Windows環境では、直接コマンドを実行する必要があります：
+```sh
+set KINTONE_BASE_URL=your_kintone_base_url
+set KINTONE_USERNAME=your_kintone_username
+set KINTONE_PASSWORD=your_kintone_password
+npx kintone-plugin-uploader plugin/plugin.prod.zip --base-url %KINTONE_BASE_URL% --username %KINTONE_USERNAME% --password %KINTONE_PASSWORD%
 ```
 
 ## テスト
