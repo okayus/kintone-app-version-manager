@@ -199,39 +199,56 @@ describe('AppVersionManager', () => {
       // 初期化
       await manager.initialize();
       
+      // ステータス表示用の変数
+      let currentStatus = 'PROCESSING';
+      const mockProcessingStatus = {
+        status: 'PROCESSING',
+        apps: [{ app: '123', status: 'PROCESSING' }]
+      };
+      const mockSuccessStatus = {
+        status: 'SUCCESS',
+        apps: [{ app: '123', status: 'SUCCESS' }]
+      };
+      
       // APIクライアントのモック設定
       const apiClient = new KintoneApiClient();
       (apiClient.deployAppVersion as any).mockResolvedValueOnce({ resultId: 'deploy-123' });
-      (apiClient.getDeployStatus as any)
-        .mockResolvedValueOnce({
-          status: 'PROCESSING',
-          apps: [{ app: '123', status: 'PROCESSING' }]
-        })
-        .mockResolvedValueOnce({
-          status: 'SUCCESS',
-          apps: [{ app: '123', status: 'SUCCESS' }]
-        });
+      (apiClient.getDeployStatus as any).mockImplementation(() => {
+        if (currentStatus === 'PROCESSING') {
+          // 次回のリクエストでは成功状態を返すように変更
+          const result = Promise.resolve(mockProcessingStatus);
+          currentStatus = 'SUCCESS';
+          return result;
+        } else {
+          return Promise.resolve(mockSuccessStatus);
+        }
+      });
+      
       (manager as any).apiClient = apiClient;
       
       // ボタンクリックをシミュレート
       const button = document.querySelector('#deploy-version-button');
       button?.dispatchEvent(new MouseEvent('click'));
       
-      // 最初のステータス取得を待機
-      await vi.runAllTimersAsync();
+      // 最初のAPIコールの非同期処理を待機
+      await vi.runOnlyPendingTimersAsync();
       
-      // この時点でPROCESSINGステータスが表示されていることを確認
+      // DOM更新を待機
+      await vi.advanceTimersByTimeAsync(100);
+      
+      // ここで初回のステータス（PROCESSING）が表示されていることを確認
       const displayEl = document.querySelector('#deploy-status-display');
       expect(displayEl?.textContent).toContain('PROCESSING');
       
-      // 次のポーリングのためにタイマーを進める
-      vi.advanceTimersByTime(2000);
-      await vi.runAllTimersAsync();
+      // 次のポーリングサイクルを進める
+      await vi.advanceTimersByTimeAsync(2000);
       
-      // SUCCESSステータスに更新されていることを確認
-      expect(displayEl?.textContent).toContain('SUCCESS');
+      // 次のステータス（SUCCESS）が表示されていることを確認
+      await vi.waitFor(() => {
+        expect(displayEl?.textContent).toContain('SUCCESS');
+      });
       
-      // 2回のAPI呼び出しがあったことを確認
+      // 複数回のAPI呼び出しがあったことを確認
       expect(apiClient.getDeployStatus).toHaveBeenCalledTimes(2);
       
       // リアルタイマーに戻す
