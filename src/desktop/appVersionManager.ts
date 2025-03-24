@@ -160,7 +160,7 @@ export class AppVersionManager {
       const { resultId } = await this.apiClient.deployAppVersion(this.currentAppId, revision);
       
       // ステータスのポーリングを開始
-      this.pollDeployStatus(resultId);
+      await this.pollDeployStatus(resultId);
     } catch (error) {
       this.displayError(this.elements.deployStatus, 'デプロイの開始に失敗しました', error);
     }
@@ -180,10 +180,22 @@ export class AppVersionManager {
       
       // 処理中の場合はポーリングを続行
       if (status.status === 'PROCESSING') {
-        setTimeout(() => this.pollDeployStatus(resultId), 2000);
+        // テスト用にDOMの更新が確実に反映されるようにする
+        await new Promise(resolve => setTimeout(resolve, 10));
+        
+        // 次のポーリングを実行
+        return new Promise(resolve => {
+          setTimeout(async () => {
+            await this.pollDeployStatus(resultId);
+            resolve();
+          }, 2000);
+        });
       }
+      
+      return Promise.resolve();
     } catch (error) {
       this.displayError(this.elements.deployStatus, 'デプロイ状態の取得に失敗しました', error);
+      return Promise.resolve();
     }
   }
 
