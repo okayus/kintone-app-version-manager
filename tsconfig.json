@@ -1,40 +1,24 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "es2015",
-    "lib": ["ESNext", "DOM"],
-    "jsx": "react",
-    "strict": true,
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
     "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "allowUnusedLabels": false,
-    "allowUnreachableCode": false,
-    "exactOptionalPropertyTypes": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "verbatimModuleSyntax": true,
-    "checkJs": true,
-    "forceConsistentCasingInFileNames": true,
-    "esModuleInterop": true,
+    "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
-    "downlevelIteration": true,
-    "types": [
-      "@types/node",
-      "@kintone/dts-gen/kintone.d.ts",
-      "./types/fields.d.ts",
-      "vitest/globals"
-    ],
     "paths": {
-      "@desktop/*": ["./src/ts/desktop/*"],
-      "@config/*": ["src/config/*"],
-      "@assets/*": ["./assets/*"]
+      "@/*": ["src/*"]
     }
   },
-  "include": ["./src/**/*.ts", "./src/**/*.tsx","vitest-setup.ts"],
-  "exclude": ["dist", "node_modules"],
-  "sourceMap": true
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
