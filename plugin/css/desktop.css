@@ -32,3 +32,55 @@
   font-family: monospace;
   white-space: pre-wrap;
 }
+
+.app-version-loading-spinner {
+  text-align: center;
+  padding: 20px;
+}
+
+.app-version-loading-spinner-inner {
+  display: inline-block;
+}
+
+.app-version-loading-bounce {
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  background-color: #3498db;
+  border-radius: 100%;
+  display: inline-block;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.app-version-loading-bounce:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.app-version-loading-bounce:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    transform: scale(0);
+  } 40% { 
+    transform: scale(1.0);
+  }
+}
+
+.app-version-error {
+  color: #e74c3c;
+  padding: 10px;
+  border-left: 3px solid #e74c3c;
+  background-color: #fadbd8;
+}
+
+.app-version-error-message {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.app-version-error-detail {
+  font-family: monospace;
+  font-size: 12px;
+}
