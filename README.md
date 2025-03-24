@@ -1,4 +1,14 @@
-# kintone-plugin-template
+# kintone-app-version-manager
+
+kintoneアプリのバージョン管理を行うプラグインです。
+
+## 機能
+
+このプラグインは、kintoneのアプリ一覧画面に以下の機能を追加します。
+
+- アプリの基本情報を取得して表示
+- アプリのバージョン履歴を取得して表示
+- 指定したバージョンをデプロイ
 
 ## 初回のセットアップ
 
@@ -20,35 +30,54 @@
         KINTONE_PASSWORD=your_kintone_password
         ```
 
+## 開発
+
+開発サーバーを起動します。
+```sh
+npm start
+```
+
 ## ビルド
 
-プロジェクトをビルドするには、以下のコマンドを実行します。
+プラグインをビルドします。
 ```sh
 npm run build
 ```
 
 ## アップロード
 
-ビルドしたプラグインをkintoneにアップロードするには、以下のコマンドを実行します。
+ビルドしたプラグインをkintoneにアップロードします。
 ```sh
 npm run upload
 ```
 
-## ConfigSchema生成
-
-ConfigSchemaを生成するには、以下のコマンドを実行します。
+本番環境用のプラグインをビルドしてアップロードします。
 ```sh
-npm run generate-types
+npm run build:prod
+npm run upload:prod
 ```
 
 ## テスト
 
-テストを実行するには、以下のコマンドを実行します。
+テストを実行します。
 ```sh
-npm run test
+npm test
 ```
 
-## 補足
+## ディレクトリ構成
 
-- プロジェクトの開発中に便利なスクリプトもいくつか用意されています。詳細は`package.json`の`scripts`セクションを参照してください。
-- プロジェクトの設定や依存関係については、`tsconfig.json`や`package.json`を参照してください。
+- `src/`: ソースコードディレクトリ
+  - `api/`: API関連のコード
+  - `desktop/`: デスクトップ用のコード
+  - `ui/`: UI関連のコード
+  - `types/`: 型定義ファイル
+- `plugin/`: プラグインファイル
+- `scripts/`: ユーティリティスクリプト
+
+## ライセンス
+
+MIT
+
+## 作者
+
+okayus
